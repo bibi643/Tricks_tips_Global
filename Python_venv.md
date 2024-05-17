@@ -53,7 +53,7 @@ source ts_env/bin/activate
 ## Deactivation
 
 ```bash
-deactivate
+source deactivate
 ```
 
 ## Check and requirement.txt
