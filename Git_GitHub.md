@@ -90,7 +90,14 @@ git add .
 git commit -m 'fusion 2 branhes'
 git push
 
+## Git ignore
+This is super important to ignore the virtual environment folder created at the beginning of the project. This folder does not need to be in the different pushes.
+In the project folder, create a **.gitignore** file and write in it the files/folders you want to ignore.
 
+```txt
+# Ignore folder
+/folder_name
+```
 
 In the terminal we **GO TO MAIN**, and wew do the git merge name_branch.
 
