@@ -26,6 +26,7 @@ How to prepare and activate a new virtual environment for a new project.
 
 # Future works
 More content will be added when requiered during my python journey.
+
 Upcoming:
 - io/requests libraries
 - bash commands
