@@ -30,3 +30,4 @@ More content will be added when requiered during my python journey.
 Upcoming:
 - io/requests libraries
 - bash commands
+- ssh connection (.pem)...
