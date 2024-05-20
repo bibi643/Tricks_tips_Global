@@ -21,7 +21,7 @@ For more details, check/ask for the obsidian folder.
 - |: pipe to take in input the output of the previous command.
 - &&: to combine commands with no links between them.
 - chmod: change rights
-- 
+- man: for the manual of the function (man ls)
 
 ## Bash Script
 
