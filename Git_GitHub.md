@@ -47,7 +47,10 @@ To clone a repo from distant repo to local repo.
 SSH is more secure.
 ### SSH procedure
 1- Generate a SSH key opening the terminal.
-  ssh-keygen -t ed25519 -C "your_email@example.com"
+  
+  ```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
 
 We have generated a **private key** (NEVER SHARE IT!!)
 
