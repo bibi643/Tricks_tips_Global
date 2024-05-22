@@ -18,7 +18,11 @@ How to start with Git/Github.
 Git is the versionning tool or "language" to work locally.
 Guthub is the place where all the repos are stored.-> to collaborate with colleagues.
 
-
+## Installation
+```bash
+sudo apt update
+sudo apt install git
+```
 
 ## Git init
 Using the terminal, locally go to the folder of the project and type **git init**
