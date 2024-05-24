@@ -90,12 +90,14 @@ We can go back to a specific version using the commit number.
 **git branch name_branch** create a new branch 
 **git checkout name_branch** move us to the branch name_branch.
 
-## Git 
-**git checkout main**
+## Git merge
+```bash
+git checkout main
 git merge branch_to_merge
 git add .
 git commit -m 'fusion 2 branhes'
 git push
+```
 
 ## Git ignore
 This is super important to ignore the virtual environment folder created at the beginning of the project. This folder does not need to be in the different pushes.
