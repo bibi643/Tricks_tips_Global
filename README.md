@@ -18,7 +18,8 @@ This repo will be made of very short md files for specific cases such as
 - [x] Connection to AWS virtual machine via ssh connection
 
 - [x] Bash commands
-- [ ] Decorators
+- [x] Decorators
+- [ ] os Library
 - [ ] Docker
 - [ ] IO/Requests
 
