@@ -18,7 +18,8 @@ This repo will be made of very short md files for specific cases such as
 - [x] Connection to AWS virtual machine via ssh connection
 
 - [x] Bash commands
-    
+- [ ] Decorators
+- [ ] Docker
 - [ ] IO/Requests
 
 
@@ -44,7 +45,6 @@ How to connect from the terminal to a virtual machine AWS.
 # Future works
 More content will be added when requiered during my python journey.
 
-Upcoming:
-- io/requests libraries
+
 
 
