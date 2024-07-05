@@ -234,6 +234,117 @@ print(grid_cv.best_params_)
 ```
 
 If needed check **Nested CV**. Basically it takes different grids and different clfs and returns for each the accuracy etc etc.
+# Nested CV
+To select an algorithm it is necessary to evaluate in a reliable way the generalisation error (the lower the better). It means that for any training sets the result would be more or less the same.
+So we will select the model with the best average score and the lowest variance.
+
+1 - Instantiate the classifiers
+
+2 - Create the params grid for each classifiers
+
+```python
+#1- Instantiate the classifiers
+
+clf1=LogisticRegression(random_state=22,max_iter=2000)
+clf2=RandomForestClassifier(random_state=22)
+clf3=SVC(random_state=22)
+
+#2- Params grid
+
+param_grid_lr = {'solver': ['liblinear', 'lbfgs'], 'C': np.logspace(-4, 2, 9)}
+
+param_grid_rf = [{'n_estimators': [10, 50, 100, 250, 500, 1000],
+                        'min_samples_leaf': [1, 3, 5],
+                        'max_features': ['sqrt', 'log2']}]
+
+param_grid_svc = [{'kernel': ['rbf'], 'C': np.logspace(-4, 4, 9), 'gamma': np.logspace(-4, 0, 4)},
+                       {'kernel': ['linear'], 'C': np.logspace(-4, 4, 9)}]
+
+#3 For each pair model/param_grid do a gridsearchCV and keep it  in a dict
+
+gridcvs={}
+for pgrid,clf,name in zip((param_grid_lr,param_grid_rf,param_grid_svc),(clf1,clf2,clf3),('Logistic Reg','RF','SVM')):
+    gcv=GridSearchCV(clf,pgrid,cv=3,refit=True)# wtf is cv and refit
+    gridcvs[name]=gcv
+    
+>>>
+{'Logistic Reg': GridSearchCV(cv=3, error_score=nan,
+              estimator=LogisticRegression(C=1.0, class_weight=None, dual=False,
+                                           fit_intercept=True,
+                                           intercept_scaling=1, l1_ratio=None,
+                                           max_iter=2000, multi_class='auto',
+                                           n_jobs=None, penalty='l2',
+                                           random_state=22, solver='lbfgs',
+                                           tol=0.0001, verbose=0,
+                                           warm_start=False),
+              iid='deprecated', n_jobs=None,
+              param_grid={'C': array([1.00000000e-04, 5.62341325e-04, 3.16227766e-03, 1.77827941e-02,
+        1.00000000e-01, 5.62341325e-01, 3.16227766e+00, 1.77827941e+01,
+        1.00000000e+02]),
+                          'solver': ['liblinear', 'lbfgs']},
+              pre_dispatch='2*n_jobs', refit=True, return_train_score=False,
+              scoring=None, verbose=0),
+ 'RF': GridSearchCV(cv=3, error_score=nan,
+              estimator=RandomForestClassifier(bootstrap=True, ccp_alpha=0.0,
+                                               class_weight=None,
+                                               criterion='gini', max_depth=None,
+                                               max_features='auto',
+                                               max_leaf_nodes=None,
+                                               max_samples=None,
+                                               min_impurity_decrease=0.0,
+                                               min_impurity_split=None,
+                                               min_samples_leaf=1,
+                                               min_samples_split=2,
+                                               min_weight_fraction_leaf=0.0,
+                                               n_estimators=100, n_jobs=None,
+                                               oob_score=False, random_state=22,
+                                               verbose=0, warm_start=False),
+              iid='deprecated', n_jobs=None,
+              param_grid=[{'max_features': ['sqrt', 'log2'],
+                           'min_samples_leaf': [1, 3, 5],
+                           'n_estimators': [10, 50, 100, 250, 500, 1000]}],
+              pre_dispatch='2*n_jobs', refit=True, return_train_score=False,
+              scoring=None, verbose=0),
+...
+
+```
+
+```python
+from sklearn.model_selection import StratifiedKFold
+outer_cv = StratifiedKFold(n_splits=3, shuffle=True)
+outer_scores={}
+for name, gs in gridcvs.items():
+    nested_score = cross_val_score(gs, X_train, y_train, cv=outer_cv)
+    outer_scores[name] = nested_score
+    print(f'{name}: outer accuracy {100*nested_score.mean():.2f} +/- {100*nested_score.std():.2f}')
+
+
+>>>
+LogisticRegression: outer accuracy 95.47 +/- 0.74
+RF: outer accuracy 85.60 +/- 0.65
+SVM: outer accuracy 95.20 +/- 0.57
+
+
+```
+Now we can select the best model with the best hyperparameter and train it on the train set. Remember that we have trained on a K-1 sample now multiple times.
+
+```python
+
+from sklearn.metrics import accuracy_score
+final_clf=gridcvs['Logistic Reg']
+final_clf.fit(X_train,y_train)
+print(f'Best Parameters: {final_clf.best_params_}')
+
+train_acc = accuracy_score(y_true=y_train, y_pred=final_clf.predict(X_train))
+test_acc = accuracy_score(y_true=y_test, y_pred=final_clf.predict(X_test))
+
+
+print(train_acc)
+print(f'Training Accuracy: {100*train_acc:.2f}')
+print(f'Test Accuracy: {100*test_acc:.2f}')
+
+```
+
 
 
 # CrossValidation
