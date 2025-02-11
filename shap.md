@@ -156,6 +156,140 @@ CANNOT be used for causal analysis.
 **SHAP  is not a measure of how important a given feature is in the real world. it is simply how important a feature is to the model.**
 
 
-# SHAP violin and heatmap
+# SHAP for Binary and multiclass Target variables
+
+## Binary target
+
+First we transform the target column (continous) into a binary one
+
+```python
+# binaryy target variable
+y_bin = [1 if y_ >10 else 0 for y_ in y]
+
+# train model
+model_bin = xgb.XGBClassifier(objective = 'binary:logistic')
+model.bin.fit(X,y_bin)
+
+#get shap values
+explainer = shhap.Explainer(model_bin)
+shap_values_bin = explainer(X)
+print(shap_values_bin.shape)
 
 
+#waterfall plot for fiirst observation
+shap.plots.waterfall(shap_values_bin[0])
+
+shap.plot.waterfall(shap_values_bin[0],link='logit')
+
+shap.plots.bar(shap_values_bin)
+
+```
+Image10
+We are now dsealing with log odds.
+
+
+
+## Multiclass Target Variables
+
+
+```python
+# binaryy target variable
+y_cat = [2 if y_ >12 else 1 if y_ >8 else 0 for y_ in y]
+
+# train model
+model_cat = xgb.XGBClassifier(objective = 'binary:logistic')
+model.cat.fit(X,y_cat)
+
+# get probab predicitons
+model_cat.predict_proba(X)[0]
+
+
+#get shap values
+explainer = shhap.Explainer(model_bin)
+shap_values_bin = explainer(X)
+print(np.shape(shap_values_bin.shape))
+>>> (4177,8,3)
+
+
+#waterfall plot for fiirst observation
+shap.plots.waterfall(shap_values_cat[0,:,0])
+shap.plots.waterfall(shap_values_cat[0,:,1])
+shap.plots.waterfall(shap_values_cat[0,:,2])
+
+
+```
+Image11
+We are now dsealing with log odds.
+
+
+
+
+## Aggregatoing Shap values
+We will focus on ly on shap values of the predicted classes.
+```python
+preds = model_cat.predict(X)
+new_shap_values = []
+for i, pred in enumerate(preds):
+  new_shap_values.append(shapp_values_cat.values[i][:,pred])
+
+#replace shap values
+shap_values_cat.shape)
+print(shap_values_cat.shape)
+>>>(4177,8)
+
+
+shap.plots.bar(shap_values_cat)
+shap.plot.beeswarm(shap_values_cat)
+
+
+```
+Image11
+
+# CatBoost Classifer for categorical features
+
+Before remember we dummified the categorcial sex fetaure, so we obtained 1 shap valuues for each type of sex. The bad thing is wwe cannot interpret the global influence of the sex on the model prediction.
+
+That is why we use CatBoost.
+We can apply CatBoost on each categorical feature without oneHot encoding them..
+
+```python
+from catboost imnport CatBoostClassifier
+import xgboost as xgb
+import shap
+
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+
+data = pd.read_csv...
+
+y = data['class']
+y =y.astype('category').cat.codes
+X =data.drop('class',axis=1)
+```
+
+We can see the datframe has a lot of categorical features.
+ 
+```python
+
+# Create dummy variables for the categorical features
+X_dummy = pd.get_dummies(X)
+model = xgb.XGBClassifier()
+model.fit(X_dummy, y)
+
+explainer = shap.Explainer(model)
+shap_values =explainer(X_dummy)
+shap.plots.waterfall(shap_values[0])
+
+```
+image 12
+we cannot relaly see what is the influence of odor, because we have odor_p, odor_n...and maybe other odor in the 108 features hidden ones.
+
+
+So we use catboost to solve this problem.
+
+```python
+model = CatBoosClassifier(iterations =20, learning_rate =0.01, depth =3)
+
+#train model
+cat_features = list(range(len(X.columns)))
+model.fit(X,y, cat_features)
