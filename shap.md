@@ -293,3 +293,9 @@ model = CatBoosClassifier(iterations =20, learning_rate =0.01, depth =3)
 #train model
 cat_features = list(range(len(X.columns)))
 model.fit(X,y, cat_features)
+# Get Shap values
+explainer =shap.Explainer(model)
+shap_values = explainer(X)
+
+#Display shap values for first observation
+shap.plots.waterfall(shap_values[0])
