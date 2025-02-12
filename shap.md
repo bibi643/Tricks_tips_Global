@@ -5,8 +5,7 @@
 Shap values are here to explain individuals models predictions. How each feature has contributed to the predictions and if features tend to increase or decrease the prediction made.
 
 Feature importance does not do all this for a specific prediction.
-Image1
-
+![plot](./shap/shape_1.png)
 We can also combine shape values from different predictions.
 Image2.
 
