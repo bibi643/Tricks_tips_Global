@@ -299,3 +299,55 @@ shap_values = explainer(X)
 
 #Display shap values for first observation
 shap.plots.waterfall(shap_values[0])
+
+```
+
+# Anomalies detection explained with Shap
+
+Anomalies are data not following the same trend as the other instances.
+
+## Isolation Forest
+
+The closest the node with 1 is to the root node, the most likely this instance is an anonaly, becasue it ws super easy to separate it from the rest of the intances.
+imagge 13
+
+
+
+Anomaly score calculate the avreage of the path length of an instance.
+
+Shorter path length suggest that instance is an anomaly.
+
+
+## COde exmaple
+
+```python
+import shap
+from sklearn.ensemble import IsolationForest
+from ucimlrepo import fetch_ucirepo
+
+power_consumption = fetch_ucirepo(id=235)
+print(power-consumption.variables)
+
+
+```
+
+- Train Isolation Forest
+  ```python
+  #Parameters
+  n_estimators = 100 # NUmber of Trees
+  sample_size = 256 # NUmber of sample to train each tree
+  contamination = 0.02 # Expeceted proportion of anomalies
+
+  # Selectr Features
+
+  features = data_aggregated.drop('Date', axis=1)
+
+  # Train
+
+  iso_forest = IsolationForest (n_estimators = n_estimators,
+      contamination= contamination,
+  max_samples =sample_size,
+  random_state =42)
+
+  iso_forest.fit(features)
+  
