@@ -287,7 +287,7 @@ shap_values =explainer(X_dummy)
 shap.plots.waterfall(shap_values[0])
 
 ```
-![plot](./shap/shap13.png)
+![plot](./shap/shap12.png)
 we cannot relaly see what is the influence of odor, because we have odor_p, odor_n...and maybe other odor in the 108 features hidden ones.
 
 
