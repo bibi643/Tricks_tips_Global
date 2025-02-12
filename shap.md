@@ -6,8 +6,10 @@ Shap values are here to explain individuals models predictions. How each feature
 
 Feature importance does not do all this for a specific prediction.
 ![plot](./shap/shape_1.png)
+
+
 We can also combine shape values from different predictions.
-Image2.
+![plot](./shap/shape_2.png)
 
 Key benefits of Shap.
 - Debugging and find which features causes the bug or anomalies.
@@ -80,12 +82,12 @@ shap.plots.waterfall(shap_values[0])
 
 shap.plots.waterfall(shap_values[0],max_display=4)
 ```
-Image3
+![plot](./shap/shap3.png)
 
 
 ## Force Plot
 You can see it as a condensed Waterfall plot.
-Image4.
+![plot](./shap/shap4.png)
 
 ```python
 shap.plots.force(shap_values[0])
@@ -102,6 +104,9 @@ Combine multiple plots of multiple predictions.
 shap.plots.force(shap_values[0:100])
 image5
 ```
+
+![plot](./shap/shap5.png)
+
 Quickly explore some of the relationships capted by the model.
 
 This is an **Interactive graph**
@@ -109,7 +114,7 @@ This is an **Interactive graph**
 ## Absolute Mean SHAP
 To understand which features are important.
 It is calculating the **absolute mean of all shap values for all observations**. So we can see which features has huge/significant contributions to the model prediction.
-Image6
+![plot](./shap/shap6.png)
 
 ```python
 shap.plots.bar(shap_values)
@@ -122,7 +127,7 @@ shap.plots.bar(shap_values)
 ```python
 shap.plots.beeswars(shap_values)
 ```
-image7
+![plot](./shap/shap7.png)
 
 
 ## Dependance Plots
@@ -136,7 +141,9 @@ shap.plots.scatter(shap_values[:,"shell_weight"],
 shap.plots.scatter(shap_values(:,'shucked weight'])
 
 ```
-Image 8-9
+![plot](./shap/shap8.png)
+
+![plot](./shap/shap9.png)
 
 
 
@@ -183,7 +190,7 @@ shap.plot.waterfall(shap_values_bin[0],link='logit')
 shap.plots.bar(shap_values_bin)
 
 ```
-Image10
+![plot](./shap/shap10.png)
 We are now dsealing with log odds.
 
 
@@ -217,7 +224,7 @@ shap.plots.waterfall(shap_values_cat[0,:,2])
 
 
 ```
-Image11
+![plot](./shap/shap11.png)
 We are now dsealing with log odds.
 
 
@@ -242,7 +249,7 @@ shap.plot.beeswarm(shap_values_cat)
 
 
 ```
-Image11
+![plot](./shap/shap12.png)
 
 # CatBoost Classifer for categorical features
 
@@ -280,7 +287,7 @@ shap_values =explainer(X_dummy)
 shap.plots.waterfall(shap_values[0])
 
 ```
-image 12
+![plot](./shap/shap13.png)
 we cannot relaly see what is the influence of odor, because we have odor_p, odor_n...and maybe other odor in the 108 features hidden ones.
 
 
@@ -308,7 +315,7 @@ Anomalies are data not following the same trend as the other instances.
 ## Isolation Forest
 
 The closest the node with 1 is to the root node, the most likely this instance is an anonaly, becasue it ws super easy to separate it from the rest of the intances.
-imagge 13
+![plot](./shap/shap13.png)
 
 
 
